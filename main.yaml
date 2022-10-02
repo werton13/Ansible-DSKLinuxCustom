@@ -1,0 +1,61 @@
+
+---
+- name: Linux Desktop VM customisation
+    hosts: local
+    become: true
+    become_user:
+    vars:
+
+    tasks:
+      - name: change default openssh server port
+          ansible.builtin.lineinfile:
+            path: /etc/ssh/sshd_config
+            regexp: '^#Port'
+            line: Port "{{ vm_ssh_port }}"
+            notify: restart ssh
+      - name: add vsphere deployment name to hosts
+          ansible.builtin.lineinfile:
+            path: /etc/hosts
+            line: "{{ $vsphere_host_name }}" "{{ $vsphere_host_ip }}"
+      - name: copy vnc xstartup file
+          ansible.builtin.copy:
+            src: ./files/xstartup
+            dest: /home/"{{ $vm_user_name }}"/.vnc/xstartup
+            owner: "{{ $vm_user_name }}"
+            group: "{{ $vm_user_name }}"
+            mode: '0755'
+      - name: create service file for vncserver
+          template:
+            src: ./templates/vncserver.service.j2
+            dest: /etc/systemd/system/vncserver@:2.service
+            owner: "{{ $vm_user_name }}"
+            group: "{{ $vm_user_name }}"
+            mode: '0755'
+      - name: enable vncserver service
+          service: 
+           name: vncserver@:2.service
+           enabled: yes
+          notify: restart vncserver
+      - name: install terraform
+          ansible.builtin.copy:
+            src: ./files/terraform
+            dest: /usr/bin/terraform
+            owner: root
+            group: root
+            mode: '0755'
+      - name: install terraform vsphere provider
+            src: ./files/terraform-provider-vsphere_v2.2.0_x5
+            dest: /home/"{{ $vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/terraform-provider-vsphere_v2.2.0_x5
+            owner: "{{ $vm_user_name }}"
+            group: "{{ $vm_user_name }}"
+            mode: '0755'
+
+    handlers:
+     - name: restart ssh
+       service: name=sshd state=restarted
+
+     - name: restart vncserver
+       service: 
+         name: vncserver@:2.service 
+         state: restarted
+       sudo systemctl enable vncserver@1.service 
