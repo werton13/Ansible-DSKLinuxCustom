@@ -16,7 +16,7 @@
       - name: add vsphere deployment name to hosts
           ansible.builtin.lineinfile:
             path: /etc/hosts
-            line: "{{ $vsphere_host_name }}" "{{ $vsphere_host_ip }}"
+            line: "{{ esxi_host_name  }}" "{{ $vsphere_host_ip }}"
       - name: copy vnc xstartup file
           ansible.builtin.copy:
             src: ./files/xstartup
