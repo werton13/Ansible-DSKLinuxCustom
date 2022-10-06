@@ -58,4 +58,3 @@
        service: 
          name: vncserver@:2.service 
          state: restarted
-       sudo systemctl enable vncserver@1.service 
