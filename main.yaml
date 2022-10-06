@@ -20,16 +20,16 @@
       - name: copy vnc xstartup file
           ansible.builtin.copy:
             src: ./files/xstartup
-            dest: /home/"{{ $vm_user_name }}"/.vnc/xstartup
-            owner: "{{ $vm_user_name }}"
-            group: "{{ $vm_user_name }}"
+            dest: /home/"{{ vm_user_name }}"/.vnc/xstartup
+            owner: "{{ vm_user_name }}"
+            group: "{{ vm_user_name }}"
             mode: '0755'
       - name: create service file for vncserver
           template:
             src: ./templates/vncserver.service.j2
             dest: /etc/systemd/system/vncserver@:2.service
-            owner: "{{ $vm_user_name }}"
-            group: "{{ $vm_user_name }}"
+            owner: "{{ vm_user_name }}"
+            group: "{{ vm_user_name }}"
             mode: '0755'
       - name: enable vncserver service
           service: 
