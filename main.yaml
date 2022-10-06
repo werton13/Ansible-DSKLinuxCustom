@@ -16,7 +16,7 @@
       - name: add vsphere deployment name to hosts
           ansible.builtin.lineinfile:
             path: /etc/hosts
-            line: "{{ esxi_host_name  }}" "{{ $vsphere_host_ip }}"
+            line: "{{ esxi_host_name  }}" "{{ vsphere_host_ip }}"
       - name: copy vnc xstartup file
           ansible.builtin.copy:
             src: ./files/xstartup
@@ -45,9 +45,9 @@
             mode: '0755'
       - name: install terraform vsphere provider
             src: ./files/terraform-provider-vsphere_v2.2.0_x5
-            dest: /home/"{{ $vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/terraform-provider-vsphere_v2.2.0_x5
-            owner: "{{ $vm_user_name }}"
-            group: "{{ $vm_user_name }}"
+            dest: /home/"{{ vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/terraform-provider-vsphere_v2.2.0_x5
+            owner: "{{ vm_user_name }}"
+            group: "{{ vm_user_name }}"
             mode: '0755'
 
     handlers:
