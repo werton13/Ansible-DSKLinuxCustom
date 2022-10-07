@@ -17,13 +17,13 @@
         insertafter: '^127.0.1.1'
     - name: create .vnc folder
       file:
-        path: /home/"{{ vm_user_name }}"/.vnc
+        path: "/home/{{ vm_user_name }}/.vnc"
         state: directory
         mode: '0755'
     - name: copy vnc xstartup file
       ansible.builtin.copy:
         src: ./files/xstartup
-        dest: /home/"{{ vm_user_name }}"/.vnc/xstartup
+        dest: "/home/{{ vm_user_name }}/.vnc/xstartup"
         owner: "{{ vm_user_name }}"
         group: "{{ vm_user_name }}"
         mode: '0755'
