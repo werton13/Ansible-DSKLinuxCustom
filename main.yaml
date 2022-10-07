@@ -1,6 +1,6 @@
 ---
 - name: Linux Desktop VM customisation
-  hosts: local
+  hosts: localhost
   become: true
 
   tasks:
