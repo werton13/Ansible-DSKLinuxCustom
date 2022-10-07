@@ -9,7 +9,7 @@
         path: /etc/ssh/sshd_config
         regexp: '^#Port'
         line: Port "{{ vm_ssh_port }}"
-        notify: restart ssh
+      notify: restart ssh
     - name: add vsphere deployment name to hosts
       ansible.builtin.lineinfile:
         path: /etc/hosts
@@ -33,7 +33,7 @@
       service:
         name: vncserver@:2.service
         enabled: true
-        notify: restart vncserver
+      notify: restart vncserver
     - name: install terraform
       ansible.builtin.copy:
         src: ./files/terraform
