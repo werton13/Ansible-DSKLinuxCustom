@@ -53,11 +53,10 @@
         group: "{{ vm_user_name }}"
         mode: '0755'
 
-      handlers:
-        - name: restart ssh
-          service: name=sshd state=restarted
-
-        - name: restart vncserver
-          service:
-            name: vncserver@:2.service
-            state: restarted
+  handlers:
+    - name: restart ssh
+      service: name=sshd state=restarted
+    - name: restart vncserver
+      service:
+        name: vncserver@:2.service
+        state: restarted
