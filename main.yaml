@@ -29,7 +29,7 @@
         mode: '0755'
     - name: create vncpassword for user
       shell:
-        - echo "{{ vnc_password }}" | vncpasswd -f > /home/"{{ vm_user_name }}"/.vnc/passwd
+        - printf "{{ vnc_password }}\n{{ vnc_password }}\n\n" | vncpasswd 
         - chown -R "{{ vm_user_name }}:{{ vm_user_name }}" /home/"{{ vm_user_name }}"/.vnc
         - chmod 0600 /home/"{{ vm_user_name }}"/.vnc/passwd
     - name: create service file for vncserver

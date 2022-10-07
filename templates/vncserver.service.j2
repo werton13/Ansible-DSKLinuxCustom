@@ -1,12 +1,12 @@
 [Unit]
-Description=Start TigerVNC server at startup for user "{{ $vm_user_name }}"
+Description=Start TigerVNC server at startup for user "{{ vm_user_name }}"
 After=syslog.target network.target
 
 [Service]
 Type=forking
-User="{{ $vm_user_name }}"
-Group="{{ $vm_user_name }}"
-WorkingDirectory=/home/"{{ $vm_user_name }}"
+User="{{ vm_user_name }}"
+Group="{{ vm_user_name }}"
+WorkingDirectory=/home/"{{ vm_user_name }}"
 
 # Clean any existing files in /tmp/.X11-unix environment
 ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
