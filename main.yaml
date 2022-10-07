@@ -27,6 +27,12 @@
         owner: "{{ vm_user_name }}"
         group: "{{ vm_user_name }}"
         mode: '0755'
+    - name: create vncpassword file
+      file:
+        path: "/home/{{ vm_user_name }}/.vnc/passwd"
+        state: touch
+        mode: '0755'
+
     - name: create vncpassword for user
       shell: |
         printf "{{ vnc_password }}\n{{ vnc_password }}\n\n" | vncpasswd 
