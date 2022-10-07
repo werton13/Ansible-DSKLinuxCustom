@@ -1,5 +1,5 @@
 [Unit]
-Description=Start TigerVNC server at startup for user w13
+Description=Start TigerVNC server at startup for user "{{ $vm_user_name }}"
 After=syslog.target network.target
 
 [Service]

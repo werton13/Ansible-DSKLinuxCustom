@@ -13,7 +13,7 @@
     - name: add vsphere deployment name to hosts
       ansible.builtin.lineinfile:
         path: /etc/hosts
-        line: "{{ esxi_host_name  }} {{ vsphere_host_ip }}"
+        line: "{{ vsphere_host_ip }} {{ esxi_host_name  }}"
         insertafter: '^127.0.1.1'
     - name: create .vnc folder
       file:
