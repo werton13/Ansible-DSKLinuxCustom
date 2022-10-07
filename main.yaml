@@ -27,6 +27,11 @@
         owner: "{{ vm_user_name }}"
         group: "{{ vm_user_name }}"
         mode: '0755'
+    - name: create vncpassword for user
+      shell:
+        - echo "{{ vnc_password }}" | vncpasswd -f > /home/"{{ vm_user_name }}"/.vnc/passwd
+        - chown -R "{{ vm_user_name }}:{{ vm_user_name }}" /home/"{{ vm_user_name }}"/.vnc
+        - chmod 0600 /home/"{{ vm_user_name }}"/.vnc/passwd
     - name: create service file for vncserver
       template:
         src: ./templates/vncserver.service.j2
