@@ -20,24 +20,20 @@
         path: "/home/{{ vm_user_name }}/.vnc"
         state: directory
         mode: '0755'
-    - name: copy vnc xstartup file
+    - name: copy vnc xstartup file 
       ansible.builtin.copy:
         src: ./files/xstartup
         dest: "/home/{{ vm_user_name }}/.vnc/xstartup"
         owner: "{{ vm_user_name }}"
         group: "{{ vm_user_name }}"
         mode: '0755'
-    - name: create vncpassword file
-      file:
-        path: "/home/{{ vm_user_name }}/.vnc/passwd"
-        state: touch
-        mode: '0755'
-
     - name: create vncpassword for user
       shell: |
-        printf "{{ vnc_password }}\n{{ vnc_password }}\n\n" | vncpasswd 
+        printf "{{ vnc_password }}\n{{ vnc_password }}\n\n" | vncpasswd
+        mv /root/.vnc/passwd "/home/{{ vm_user_name }}/.vnc/"
         chown -R "{{ vm_user_name }}:{{ vm_user_name }}" /home/"{{ vm_user_name }}"/.vnc
         chmod 0600 /home/"{{ vm_user_name }}"/.vnc/passwd
+        chown -R "{{ vm_user_name }}:{{ vm_user_name }}" /home/"{{ vm_user_name }}"/.vnc/passwd
     - name: create service file for vncserver
       template:
         src: ./templates/vncserver.service.j2
