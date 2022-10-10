@@ -2,7 +2,10 @@
 - name: Linux Desktop VM customisation
   hosts: localhost
   become: true
-
+        vars:
+        files_to_copy:
+            terraform-provider-vsphere_v2.2.0_x5: "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
+            terraform-provider-template_v2.2.0_x4: "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
   tasks:
     - name: change default openssh server port
       ansible.builtin.lineinfile:
@@ -58,19 +61,32 @@
         path: /home/"{{ vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/
         state: directory
         mode: '0755'
-    - name: install terraform vsphere provider
+        loop:
+          - "/home/{{ user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
+          - "/home/{{ user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
+    #- name: install terraform vsphere provider  #terraform-provider-template_v2.2.0_x4
+    #  ansible.builtin.copy:
+    #    src: ./files/terraform-provider-vsphere_v2.2.0_x5
+    #    dest: /home/"{{ vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/terraform-provider-vsphere_v2.2.0_x5
+    #    owner: "{{ vm_user_name }}"
+    #    group: "{{ vm_user_name }}"
+    #    mode: '0755'
+
+    - name: copy terraform providers to local user filesystem
       ansible.builtin.copy:
-        src: ./files/terraform-provider-vsphere_v2.2.0_x5
-        dest: /home/"{{ vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/terraform-provider-vsphere_v2.2.0_x5
+        src: "./files/{{ item.key }}"
+        dest: "{{ item.value }}/{{ item.key }}"
         owner: "{{ vm_user_name }}"
         group: "{{ vm_user_name }}"
         mode: '0755'
-    - name: install vscode
-      shell: |
-        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-        install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-        sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-        rm -f packages.microsoft.gpg
+      loop: "{{ files_to_copy | dict2items }}"
+
+    #- name: install vscode ## need to rewrite..
+    #  shell: |
+    #    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    #    install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
+    #    sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+    #    rm -f packages.microsoft.gpg
 
   handlers:
     - name: restart ssh
