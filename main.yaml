@@ -2,10 +2,10 @@
 - name: Linux Desktop VM customisation
   hosts: localhost
   become: true
-        vars:
-        files_to_copy:
-            terraform-provider-vsphere_v2.2.0_x5: "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
-            terraform-provider-template_v2.2.0_x4: "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
+  vars:
+  files_to_copy:
+      terraform-provider-vsphere_v2.2.0_x5: "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
+      terraform-provider-template_v2.2.0_x4: "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
   tasks:
     - name: change default openssh server port
       ansible.builtin.lineinfile:
