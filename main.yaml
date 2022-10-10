@@ -61,7 +61,7 @@
         path: "{{ item }}"
         state: directory
         mode: '0755'
-        loop:
+      loop:
           - "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
           - "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
     # - name: install terraform vsphere provider  #terraform-provider-template_v2.2.0_x4
