@@ -3,7 +3,7 @@
   hosts: localhost
   become: true
   vars:
-  files_to_copy:
+    files_to_copy:
       terraform-provider-vsphere_v2.2.0_x5: "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
       terraform-provider-template_v2.2.0_x4: "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
   tasks:
@@ -23,7 +23,7 @@
         path: "/home/{{ vm_user_name }}/.vnc"
         state: directory
         mode: '0755'
-    - name: copy vnc xstartup file 
+    - name: copy vnc xstartup file
       ansible.builtin.copy:
         src: ./files/xstartup
         dest: "/home/{{ vm_user_name }}/.vnc/xstartup"
@@ -56,7 +56,7 @@
         owner: root
         group: root
         mode: '0755'
-    - name: create folder for terraform vsphere provider 
+    - name: create folder for terraform vsphere provider
       file:
         path: /home/"{{ vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/
         state: directory
@@ -64,7 +64,7 @@
         loop:
           - "/home/{{ user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
           - "/home/{{ user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
-    #- name: install terraform vsphere provider  #terraform-provider-template_v2.2.0_x4
+    # - name: install terraform vsphere provider  #terraform-provider-template_v2.2.0_x4
     #  ansible.builtin.copy:
     #    src: ./files/terraform-provider-vsphere_v2.2.0_x5
     #    dest: /home/"{{ vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/terraform-provider-vsphere_v2.2.0_x5
@@ -81,7 +81,7 @@
         mode: '0755'
       loop: "{{ files_to_copy | dict2items }}"
 
-    #- name: install vscode ## need to rewrite..
+    # - name: install vscode ## need to rewrite..
     #  shell: |
     #    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
     #    install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
