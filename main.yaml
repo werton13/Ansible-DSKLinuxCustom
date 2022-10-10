@@ -56,14 +56,14 @@
         owner: root
         group: root
         mode: '0755'
-    - name: create folder for terraform vsphere provider
+    - name: create folders for terraform  providers in local filesystem
       file:
-        path: /home/"{{ vm_user_name }}"/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/
+        path: "{{ item }}"
         state: directory
         mode: '0755'
         loop:
-          - "/home/{{ user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
-          - "/home/{{ user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
+          - "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/vsphere/2.2.0/linux_amd64/"
+          - "/home/{{ vm_user_name }}/.terraform.d/plugins/local/registry.terraform.io/hashicorp/template/2.2.0/linux_amd64"
     # - name: install terraform vsphere provider  #terraform-provider-template_v2.2.0_x4
     #  ansible.builtin.copy:
     #    src: ./files/terraform-provider-vsphere_v2.2.0_x5
